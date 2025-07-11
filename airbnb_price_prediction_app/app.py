@@ -1,17 +1,12 @@
 import streamlit as st
 import pandas as pd
-import pickle
-
 from model_loader import load_model
 
-model = load_model()
+# Load model and columns from Google Drive
+model, model_columns = load_model()
 
-
-# Load model and expected column order
-model = pickle.load(open('model.pkl', 'rb'))
-model_columns = pickle.load(open('model_columns.pkl', 'rb'))
-
-st.title("Airbnb Price Prediction 🏠💰")
+# App Title
+st.title("🏡 Airbnb Price Prediction 💰")
 
 # --- User Inputs ---
 room_type = st.selectbox("Room Type", ["Entire home/apt", "Private room", "Shared room", "Hotel room"])
@@ -43,6 +38,6 @@ input_df = pd.DataFrame([input_dict])
 input_df = input_df.reindex(columns=model_columns, fill_value=0)
 
 # --- Prediction ---
-if st.button("Predict Price"):
+if st.button("🔮 Predict Price"):
     prediction = model.predict(input_df)[0]
-    st.success(f"Estimated Price: ${prediction:.2f} per night")
+    st.success(f"Estimated Price: 💲{prediction:.2f} per night")
